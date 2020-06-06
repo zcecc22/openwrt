@@ -14,6 +14,30 @@ define Device/alfa-network_awusfree1
 endef
 TARGET_DEVICES += alfa-network_awusfree1
 
+define Device/asus_rt-n10p-v3
+  IMAGE_SIZE := 7872k
+  DEVICE_VENDOR := Asus
+  DEVICE_MODEL := RT-N10P
+  DEVICE_VARIANT := V3
+endef
+TARGET_DEVICES += asus_rt-n10p-v3
+
+define Device/asus_rt-n11p-b1
+  IMAGE_SIZE := 7872k
+  DEVICE_VENDOR := Asus
+  DEVICE_MODEL := RT-N11P
+  DEVICE_VARIANT := B1
+endef
+TARGET_DEVICES += asus_rt-n11p-b1
+
+define Device/asus_rt-n12-vp-b1
+  IMAGE_SIZE := 7872k
+  DEVICE_VENDOR := Asus
+  DEVICE_MODEL := RT-N12 VP
+  DEVICE_VARIANT := B1
+endef
+TARGET_DEVICES += asus_rt-n12-vp-b1
+
 define Device/buffalo_wcr-1166ds
   IMAGE_SIZE := 7936k
   BUFFALO_TAG_PLATFORM := MTK
@@ -34,8 +58,7 @@ TARGET_DEVICES += buffalo_wcr-1166ds
 define Device/cudy_wr1000
   IMAGE_SIZE := 7872k
   IMAGES += factory.bin
-  IMAGE/factory.bin := $$(sysupgrade_bin) | check-size $$$$(IMAGE_SIZE) | \
-	jcg-header 92.122
+  IMAGE/factory.bin := $$(sysupgrade_bin) | check-size | jcg-header 92.122
   JCG_MAXSIZE := 7872k
   DEVICE_VENDOR := Cudy
   DEVICE_MODEL := WR1000
@@ -161,7 +184,6 @@ define Device/mercury_mac1200r-v2
   DEVICE_VENDOR := Mercury
   DEVICE_MODEL := MAC1200R
   DEVICE_VARIANT := v2.0
-  SUPPORTED_DEVICES := mac1200rv2
   DEVICE_PACKAGES := kmod-mt76x2
   SUPPORTED_DEVICES += mac1200rv2
 endef
@@ -179,8 +201,7 @@ define Device/netgear_r6120
   IMAGES += factory.img
   IMAGE/default := append-kernel | pad-to $$$$(BLOCKSIZE)| append-rootfs | \
 	pad-rootfs
-  IMAGE/sysupgrade.bin := $$(IMAGE/default) | append-metadata | \
-	check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := $$(IMAGE/default) | append-metadata | check-size
   IMAGE/factory.img := pad-extra 576k | $$(IMAGE/default) | \
 	pad-to $$$$(BLOCKSIZE) | sercom-footer | pad-to 128 | zip R6120.bin | \
 	sercom-seal
@@ -228,6 +249,15 @@ define Device/tama_w06
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-ohci
 endef
 TARGET_DEVICES += tama_w06
+
+define Device/totolink_a3
+  IMAGE_SIZE := 7936k
+  UIMAGE_NAME := za3
+  DEVICE_VENDOR := TOTOLINK
+  DEVICE_MODEL := A3
+  DEVICE_PACKAGES := kmod-mt76x2
+endef
+TARGET_DEVICES += totolink_a3
 
 define Device/totolink_lr1200
   IMAGE_SIZE := 7872k
@@ -396,6 +426,7 @@ define Device/tplink_tl-wr840n-v5
   TPLINK_HWREVADD := 0x5
   IMAGES := sysupgrade.bin
   SUPPORTED_DEVICES += tl-wr840n-v5
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr840n-v5
 
@@ -424,6 +455,7 @@ define Device/tplink_tl-wr841n-v14
   TPLINK_HWREVADD := 0x14
   IMAGES := sysupgrade.bin tftp-recovery.bin
   IMAGE/tftp-recovery.bin := pad-extra 64k | $$(IMAGE/factory.bin)
+  DEFAULT := n
 endef
 TARGET_DEVICES += tplink_tl-wr841n-v14
 
@@ -583,6 +615,6 @@ define Device/zyxel_keenetic-extra-ii
 	kmod-usb-ledtrig-usbport
   IMAGES += factory.bin
   IMAGE/factory.bin := $$(sysupgrade_bin) | pad-to $$$$(BLOCKSIZE) | \
-	check-size $$$$(IMAGE_SIZE) | zyimage -d 6162 -v "ZyXEL Keenetic Extra II"
+	check-size | zyimage -d 6162 -v "ZyXEL Keenetic Extra II"
 endef
 TARGET_DEVICES += zyxel_keenetic-extra-ii

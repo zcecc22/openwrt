@@ -891,7 +891,7 @@ static struct device_info boards[] = {
 			"{product_name:Archer C6,product_ver:2.0.0,special_id:52550000}\r\n"
 			"{product_name:Archer C6,product_ver:2.0.0,special_id:4A500000}\r\n",
 		.support_trail = '\x00',
-		.soft_ver = "soft_ver:1.1.1\n",
+		.soft_ver = "soft_ver:1.2.1\n",
 
 		.partitions = {
 			{"fs-uboot", 0x00000, 0x20000},
@@ -996,6 +996,42 @@ static struct device_info boards[] = {
 			"{product_name:Archer C60,product_ver:2.0.0,special_id:55530000}\r\n",
 		.support_trail = '\x00',
 		.soft_ver = "soft_ver:2.0.0\n",
+
+		.partitions = {
+			{"factory-boot", 0x00000, 0x1fb00},
+			{"default-mac", 0x1fb00, 0x00200},
+			{"pin", 0x1fd00, 0x00100},
+			{"product-info", 0x1fe00, 0x00100},
+			{"device-id", 0x1ff00, 0x00100},
+			{"fs-uboot", 0x20000, 0x10000},
+			{"firmware", 0x30000, 0x7a0000},
+			{"soft-version", 0x7d9500, 0x00100},
+			{"support-list", 0x7d9600, 0x00100},
+			{"extra-para", 0x7d9700, 0x00100},
+			{"profile", 0x7d9800, 0x03000},
+			{"default-config", 0x7dc800, 0x03000},
+			{"partition-table", 0x7df800, 0x00800},
+			{"user-config", 0x7e0000, 0x0c000},
+			{"certificate", 0x7ec000, 0x04000},
+			{"radio", 0x7f0000, 0x10000},
+			{NULL, 0, 0}
+		},
+
+		.first_sysupgrade_partition = "os-image",
+		.last_sysupgrade_partition = "file-system",
+	},
+
+	/** Firmware layout for the C60v3 */
+	{
+		.id     = "ARCHER-C60-V3",
+		.vendor = "",
+		.support_list =
+			"SupportList:\r\n"
+			"{product_name:Archer C60,product_ver:3.0.0,special_id:42520000}\r\n"
+			"{product_name:Archer C60,product_ver:3.0.0,special_id:45550000}\r\n"
+			"{product_name:Archer C60,product_ver:3.0.0,special_id:55530000}\r\n",
+		.support_trail = '\x00',
+		.soft_ver = "soft_ver:3.0.0\n",
 
 		.partitions = {
 			{"factory-boot", 0x00000, 0x1fb00},
@@ -1692,7 +1728,46 @@ static struct device_info boards[] = {
 			{"user-config", 0x630000, 0x10000},
 			{"default-config", 0x640000, 0x10000},
 			{"radio", 0x7f0000, 0x10000},
+			{NULL, 0, 0}
+		},
 
+		.first_sysupgrade_partition = "os-image",
+		.last_sysupgrade_partition = "file-system"
+	},
+
+	/** Firmware layout for the RE450 v3 */
+	{
+		.id     = "RE450-V3",
+		.vendor = "",
+		.support_list =
+			"SupportList:\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:00000000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:55530000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:45550000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:4A500000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:43410000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:41550000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:41530000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:4B520000}\r\n"
+			"{product_name:RE450,product_ver:3.0.0,special_id:42520000}\r\n",
+		.support_trail = '\x00',
+		.soft_ver = NULL,
+
+		/* We're using a dynamic kernel/rootfs split here */
+		.partitions = {
+			{"fs-uboot", 0x00000, 0x20000},
+			{"default-mac", 0x20000, 0x00020},
+			{"pin", 0x20020, 0x00020},
+			{"product-info", 0x21000, 0x01000},
+			{"partition-table", 0x22000, 0x02000},
+			{"soft-version", 0x24000, 0x01000},
+			{"support-list", 0x25000, 0x01000},
+			{"profile", 0x26000, 0x08000},
+			{"user-config", 0x2e000, 0x10000},
+			{"default-config", 0x3e000, 0x10000},
+			{"config-info", 0x4e000, 0x00400},
+			{"firmware", 0x50000, 0x7a0000},
+			{"radio", 0x7f0000, 0x10000},
 			{NULL, 0, 0}
 		},
 
@@ -2172,6 +2247,7 @@ static void build_image(const char *output,
 	    strcasecmp(info->id, "ARCHER-C25-V1") == 0 ||
 	    strcasecmp(info->id, "ARCHER-C59-V2") == 0 ||
 	    strcasecmp(info->id, "ARCHER-C60-V2") == 0 ||
+	    strcasecmp(info->id, "ARCHER-C60-V3") == 0 ||
 	    strcasecmp(info->id, "TLWR1043NV5") == 0) {
 		const char mdat[11] = {0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00};
 		parts[5] = put_data("extra-para", mdat, 11);
